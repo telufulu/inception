@@ -8,8 +8,7 @@ CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98
 #				SOURCES						#
 #*******************************************************************************#
 NAME		=	hola
-FILES		=	$(S)main.cpp $(S)hola.cpp
-OBJS		=	$(FILES:$(S)%.cpp=$(O)%.o)
+FILES		=	$(S)docker-compose.yml
 
 #*******************************************************************************#
 #				DIRECTORIES					#
@@ -21,17 +20,10 @@ I		=	inc/
 #*******************************************************************************#
 #				RULES						#
 #*******************************************************************************#
-all:		$(NAME)
-
-$(NAME):	$(OBJS)
-	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
-
-$(O)%.o:	$(S)%.cpp
-	@[ -d $(O) ] || mkdir -p $(O)
-	@$(CXX) $(CXXFLAGS) -I $(I) -c $< -o $@
+up:
+	docker compose -f $(FILES) up --build
 
 clean:
-	@rm -rf $(O)
 
 fclean:	clean
 	@rm -rf $(NAME)
