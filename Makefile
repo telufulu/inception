@@ -1,33 +1,19 @@
-#*******************************************************************************#
-#				COMPILER					#
-#*******************************************************************************#
-CXX		=	c++
-CXXFLAGS	=	-Wall -Werror -Wextra -std=c++98
+NAME = inception
+COMPOSE = docker compose -f srcs/docker-compose.yml -p $(NAME)
 
-#*******************************************************************************#
-#				SOURCES						#
-#*******************************************************************************#
-NAME		=	hola
-FILES		=	$(S)docker-compose.yml
+all: up
 
-#*******************************************************************************#
-#				DIRECTORIES					#
-#*******************************************************************************#
-S		=	srcs/
-O		=	objs/
-I		=	inc/
-
-#*******************************************************************************#
-#				RULES						#
-#*******************************************************************************#
 up:
-	docker compose -f $(FILES) up --build
+	$(COMPOSE) up --build
 
-clean:
+down:
+	$(COMPOSE) down
 
-fclean:	clean
-	@rm -rf $(NAME)
+clean: down
 
-re:	fclean all
+fclean:
+	@$(COMPOSE) down --rmi all -v
 
-.PHONY: all clean fclean re
+re: fclean up
+
+.PHONY: all up down clean fclean re
