@@ -3,3 +3,17 @@ services:
     build: ./requirements/nginx
     container_name: nginx
     image: nginx
+    depends_on:
+      - wordpress
+  
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    image: wordpress
+    depends_on:
+      - mariadb
+  
+  mariadb:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    image: mariadb
