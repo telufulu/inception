@@ -17,3 +17,9 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     image: mariadb
+
+networks:
+  inception-net:
+    name: main-net
+    driver: bridge
+
