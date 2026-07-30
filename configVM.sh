@@ -154,15 +154,13 @@ step "Configuring main user"
 printf "Please, enter the main user: "
 read LOGIN
 
-LOGIN_PRINT="${YELLOW}${LOGIN}${RESET}"
-
 if [ -z "$LOGIN" ]; then
 	printf "${RED}Empty user input ❌${RESET}\n\n"
 	add_failed "Main user configuration: empty user input"
 else
 	if id "$LOGIN" >/dev/null 2>&1; then
 		if usermod -aG sudo "$LOGIN"; then
-			printf "%s added to sudo group ✅\n" "$LOGIN_PRINT"
+			printf "%b%s%b added to sudo group ✅\n" "$YELLOW" "$LOGIN" "$RESET"
 			add_success "${LOGIN} added to sudo group"
 		else
 			printf "${RED}Could not add %s to sudo group ❌${RESET}\n" "$LOGIN"
@@ -170,7 +168,7 @@ else
 		fi
 
 		if usermod -aG docker "$LOGIN"; then
-			printf "%s added to docker group ✅\n" "$LOGIN_PRINT"
+			printf "%b%s%b added to docker group ✅\n" "$YELLOW" "$LOGIN" "$RESET"
 			add_success "${LOGIN} added to docker group"
 		else
 			printf "${RED}Could not add %s to docker group ❌${RESET}\n" "$LOGIN"
@@ -186,7 +184,7 @@ set rnu
 EOF
 		then
 			if chown "$LOGIN:$LOGIN" "/home/$LOGIN/.vimrc"; then
-				printf "/home/%s/.vimrc created ✅\n\n" "$LOGIN_PRINT"
+				printf "/home/%b%s%b/.vimrc created ✅\n\n" "$YELLOW" "$LOGIN" "$RESET"
 				add_success "/home/${LOGIN}/.vimrc created"
 			else
 				printf "${RED}/home/%s/.vimrc ownership failed ❌${RESET}\n\n" "$LOGIN"
