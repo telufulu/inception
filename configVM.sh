@@ -153,6 +153,7 @@ step "Configuring main user"
 
 printf "Please, enter the main user: "
 read LOGIN
+LOGIN = ${YELLOW}${LOGIN}${RESET}
 
 if [ -z "$LOGIN" ]; then
 	printf "${RED}Empty user input ❌${RESET}\n\n"
@@ -160,10 +161,10 @@ if [ -z "$LOGIN" ]; then
 else
 	if id "$LOGIN" >/dev/null 2>&1; then
 		if usermod -aG sudo "$LOGIN"; then
-			printf "${GREEN}%s added to sudo group ✅${RESET}\n" "$LOGIN"
+			printf "%s added to sudo group ✅${RESET}\n" "$$LOGIN"
 			add_success "$LOGIN added to sudo group"
 		else
-			printf "${RED}Could not add %s to sudo group ❌${RESET}\n" "$LOGIN"
+			printf "${RED}Could not add %s${RED} to sudo group ❌${RESET}\n" "$LOGIN"
 			add_failed "$LOGIN added to sudo group"
 		fi
 
@@ -171,7 +172,7 @@ else
 			printf "${GREEN}%s added to docker group ✅${RESET}\n" "$LOGIN"
 			add_success "$LOGIN added to docker group"
 		else
-			printf "${RED}Could not add %s to docker group ❌${RESET}\n" "$LOGIN"
+			printf "${RED}Could not add %s ${RED}to docker group ❌${RESET}\n" "$LOGIN"
 			add_failed "$LOGIN added to docker group"
 		fi
 
@@ -207,7 +208,7 @@ printf "${GREEN}Successful steps:${RESET}\n"
 if [ -n "$SUCCESS_LIST" ]; then
 	printf "%s\n" "$SUCCESS_LIST"
 else
-	printf "- None\n"
+	printf "%s\n" "- None"
 fi
 
 printf "\n${RED}Failed steps:${RESET}\n"
@@ -215,7 +216,7 @@ printf "\n${RED}Failed steps:${RESET}\n"
 if [ -n "$FAILED_LIST" ]; then
 	printf "%s\n" "$FAILED_LIST"
 else
-	printf "- None\n"
+	printf "%s\n" "- None"
 fi
 
 printf "\n"
