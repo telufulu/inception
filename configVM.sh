@@ -74,7 +74,6 @@ docker compose
 docker compose version
 echo "DOCKER installed ✅:"
 docker --version
-echo "Try to execute `docker ps`"
 echo
 
 
@@ -88,4 +87,5 @@ sudo usermod -aG sudo $LOGIN
 sudo usermod -aG docker $LOGIN
 chown telufulu:telufulu /home/telufulu/.vimrc
 echo "${YELLOW}${LOGIN}${RESET} is now sudo ✅"
-
+echo "✅${GREEN} All done! ${RESET}✅"
+echo "Try to execute `docker ps`"
