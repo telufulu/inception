@@ -153,7 +153,8 @@ step "Configuring main user"
 
 printf "Please, enter the main user: "
 read LOGIN
-LOGIN = ${YELLOW}${LOGIN}${RESET}
+
+LOGIN_PRINT="${YELLOW}${LOGIN}${RESET}"
 
 if [ -z "$LOGIN" ]; then
 	printf "${RED}Empty user input ❌${RESET}\n\n"
@@ -161,19 +162,19 @@ if [ -z "$LOGIN" ]; then
 else
 	if id "$LOGIN" >/dev/null 2>&1; then
 		if usermod -aG sudo "$LOGIN"; then
-			printf "%s added to sudo group ✅${RESET}\n" "$$LOGIN"
-			add_success "$LOGIN added to sudo group"
+			printf "%s added to sudo group ✅\n" "$LOGIN_PRINT"
+			add_success "${LOGIN} added to sudo group"
 		else
-			printf "${RED}Could not add %s${RED} to sudo group ❌${RESET}\n" "$LOGIN"
-			add_failed "$LOGIN added to sudo group"
+			printf "${RED}Could not add %s to sudo group ❌${RESET}\n" "$LOGIN"
+			add_failed "${LOGIN} added to sudo group"
 		fi
 
 		if usermod -aG docker "$LOGIN"; then
-			printf "${GREEN}%s added to docker group ✅${RESET}\n" "$LOGIN"
-			add_success "$LOGIN added to docker group"
+			printf "%s added to docker group ✅\n" "$LOGIN_PRINT"
+			add_success "${LOGIN} added to docker group"
 		else
-			printf "${RED}Could not add %s ${RED}to docker group ❌${RESET}\n" "$LOGIN"
-			add_failed "$LOGIN added to docker group"
+			printf "${RED}Could not add %s to docker group ❌${RESET}\n" "$LOGIN"
+			add_failed "${LOGIN} added to docker group"
 		fi
 
 		step "Creating user vim configuration"
@@ -185,19 +186,19 @@ set rnu
 EOF
 		then
 			if chown "$LOGIN:$LOGIN" "/home/$LOGIN/.vimrc"; then
-				printf "${GREEN}/home/%s/.vimrc created ✅${RESET}\n\n" "$LOGIN"
-				add_success "/home/$LOGIN/.vimrc created"
+				printf "/home/%s/.vimrc created ✅\n\n" "$LOGIN_PRINT"
+				add_success "/home/${LOGIN}/.vimrc created"
 			else
 				printf "${RED}/home/%s/.vimrc ownership failed ❌${RESET}\n\n" "$LOGIN"
-				add_failed "/home/$LOGIN/.vimrc ownership failed"
+				add_failed "/home/${LOGIN}/.vimrc ownership failed"
 			fi
 		else
 			printf "${RED}/home/%s/.vimrc creation failed ❌${RESET}\n\n" "$LOGIN"
-			add_failed "/home/$LOGIN/.vimrc creation failed"
+			add_failed "/home/${LOGIN}/.vimrc creation failed"
 		fi
 	else
 		printf "${RED}User does not exist: %s ❌${RESET}\n\n" "$LOGIN"
-		add_failed "Main user does not exist: $LOGIN"
+		add_failed "Main user does not exist: ${LOGIN}"
 	fi
 fi
 
