@@ -24,6 +24,12 @@ BOLD_WHITE="\033[1;37m"
 echo "${MAGENTA}/********************/\n"
 echo "     INSTALATIONS     \n"
 echo "/********************/\n"
+echo "${CYAN}==== Updating APT ====${RESET}\n"
+apt update
+apt upgrade -y
+echo "apt updated ✅\n"
+echo
+
 echo "${CYAN}==== Installing SUDO ====${RESET}\n"
 apt install -y sudo
 echo "Sudo installed ✅\n"
@@ -34,6 +40,16 @@ apt install -y vim
 echo "Vim installed ✅\n"
 echo
 
+echo "${CYAN}==== Installing MAKE ====${RESET}\n"
+apt install -y make
+echo "Make installed ✅\n"
+echo
+
+echo "${CYAN}==== Installing CURL ====${RESET}\n"
+apt install -y curl
+echo "CURL installed ✅\n"
+echo
+
 # Other configs
 echo "${MAGENTA}/********************/\n"
 echo "     CONFIGURATIONS     \n"
@@ -41,5 +57,5 @@ echo "/********************/\n"
 echo "${CYAN}==== Config sudoers ====${RESET}\n"
 read -p "Please, enter the main user: " LOGIN
 usermod -aG sudo $LOGIN
-echo "${LOGIN} added to sudoers group"
+echo "${LOGIN} added to sudoers group ✅"
 
