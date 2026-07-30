@@ -39,7 +39,7 @@ echo "${MAGENTA}/********************/\n"
 echo "     CONFIGURATIONS     \n"
 echo "/********************/\n"
 echo "${CYAN}==== Config sudoers ====${RESET}\n"
-read "Please, enter the main user: " LOGIN
+read -p "Please, enter the main user: " LOGIN
 usermod -aG sudo $LOGIN
 echo "${LOGIN} added to sudoers group"
 
