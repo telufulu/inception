@@ -21,10 +21,25 @@ BOLD_CYAN="\033[1;36m"
 BOLD_WHITE="\033[1;37m"
 
 # Instalations
+echo "${MAGENTA}/********************/\n"
+echo "     INSTALATIONS     \n"
+echo "/********************/\n"
 echo "${CYAN}==== Installing SUDO ====${RESET}\n"
 apt install -y sudo
+echo "Sudo installed ✅\n"
 echo
 
 echo "${CYAN}==== Installing VIM ====${RESET}\n"
 apt install -y vim
+echo "Vim installed ✅\n"
 echo
+
+# Other configs
+echo "${MAGENTA}/********************/\n"
+echo "     CONFIGURATIONS     \n"
+echo "/********************/\n"
+echo "${CYAN}==== Config sudoers ====${RESET}\n"
+read "Please, enter the main user: " LOGIN
+usermod -aG sudo $LOGIN
+echo "${LOGIN} added to sudoers group"
+
