@@ -37,6 +37,12 @@ echo
 
 echo "${CYAN}==== Installing VIM ====${RESET}\n"
 apt install -y vim
+cat > /root/.vimrc << EOF
+syntax on
+set nu
+set rnu
+EOF
+source ~/.vimrc
 echo "Vim installed ✅\n"
 echo
 
@@ -50,12 +56,36 @@ apt install -y curl
 echo "CURL installed ✅\n"
 echo
 
+echo "${CYAN}==== Installing DOCKER ====${RESET}\n"
+sudo usermod -aG docker $USER
+apt install -y ca-certificates gnupg
+apt install -m 0755 -d /etc/apt/keyring
+curl -fsSL https://download.docker.com/linux/debian/gpg \
+| sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" \
+| sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+echo "${CYAN}* Installing docker compose *${RESET}\n"
+docker compose
+docker compose version
+echo "DOCKER installed ✅:"
+docker --version
+echo "Try to execute `docker ps`"
+echo
+
+
 # Other configs
 echo "${MAGENTA}/********************/\n"
 echo "     CONFIGURATIONS     \n"
 echo "/********************/\n"
 echo "${CYAN}==== Config sudoers ====${RESET}\n"
 read -p "Please, enter the main user: " LOGIN
-usermod -aG sudo $LOGIN
-echo "${LOGIN} added to sudoers group ✅"
+sudo usermod -aG sudo $LOGIN
+sudo usermod -aG docker $LOGIN
+chown telufulu:telufulu /home/telufulu/.vimrc
+echo "${YELLOW}${LOGIN}${RESET} is now sudo ✅"
 
