@@ -1,26 +1,88 @@
 services:
   nginx:
-    build: ./requirements/nginx
     container_name: inception-nginx
+    build:
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
     image: nginx
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception-net
+    port:
+      - "433:433"
     depends_on:
       - wordpress
-#    restart: unless-stopped
+    restart: unless-stopped
   
   wordpress:
-    build: ./requirements/wordpress
     container_name: inception-wordpress
+    build:
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
     image: wordpress
+    secrets:
+      - db_password
+      - wp_admin_password
+      - wp_user_password
+    env_file:
+      - .env
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception-net
     depends_on:
       - mariadb
-#    restart: unless-stopped
+    restart: unless-stopped
   
   mariadb:
-    build: ./requirements/mariadb
     container_name: inception-mariadb
+    build:
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
     image: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - inception-net
+    env_file:
+      - .env
+    secretos:
+      - db_root_password
+      - db_password
+    restart: unless-stopped
 
 networks:
   inception-net:
-    name: main-net
+    name: inception-net
     driver: bridge
+
+volumes:
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${LOGIN}/data/wordpress
+
+  mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/${LOGIN}/data/mariadb
+
+secrets:
+  db_root_password:
+    file: ../secrets/db_root_password.txt
+
+  db_password:
+    file: ../secrets/db_password.txt
+
+  wp_admin_password:
+    file: ../secrets/wp_admin_password.txt
+
+  wp_user_password:
+    file: ../secrets/wp_user_password.txt
