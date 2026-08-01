@@ -1,9 +1,10 @@
-NAME = inception
 COMPOSE = docker compose -f srcs/docker-compose.yml -p $(NAME)
 
 all: up
 
 up:
+	@mkdir -p $(DATA_DIR)/wordpress
+	@mkdir -p $(DATA_DIR)/mariadb
 	$(COMPOSE) up --build
 
 down:
