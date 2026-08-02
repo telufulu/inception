@@ -47,7 +47,7 @@ services:
       - inception-net
     env_file:
       - .env
-    secretos:
+    secrets:
       - db_root_password
       - db_password
     restart: unless-stopped
