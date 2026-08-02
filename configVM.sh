@@ -95,6 +95,8 @@ run_critical_step "Installing git" apt install -y git
 run_step "Installing vim" apt install -y vim
 run_critical_step "Installing make" apt install -y make
 run_critical_step "Installing curl, ca-certificates and gnupg" apt install -y curl ca-certificates gnupg
+run_critical_step "Installing graphical support packages" apt install -y xauth x11-apps dbus-x11
+run_critical_step "Installing Chromium browser" apt install -y chromium
 
 # Step 5.6 — Create root editor configuration
 step "Creating root vim configuration"
@@ -119,6 +121,8 @@ section "SSH CHECK"
 # Step 5.7 — Check that the SSH service is active and start it if needed
 run_critical_step "Installing OpenSSH server" apt install -y openssh-server
 run_critical_step "Enabling SSH service" systemctl enable ssh
+
+run_step "Enabling SSH X11 forwarding" sh -c "grep -q '^X11Forwarding yes' /etc/ssh/sshd_config || printf '\nX11Forwarding yes\n' >> /etc/ssh/sshd_config"
 
 if systemctl is-active --quiet ssh; then
 	printf "${GREEN}SSH service is already active ✅${RESET}\n\n"
@@ -248,25 +252,6 @@ then
 else
 	printf "${RED}/home/%s/.vimrc creation failed ❌${RESET}\n\n" "$LOGIN"
 	add_failed "/home/${LOGIN}/.vimrc creation failed"
-fi
-
-step "Add telufulu.42.fr to hosts"
-
-PROJECT_DOMAIN="${LOGIN}.42.fr"
-HOSTS_ENTRY="127.0.0.1 ${PROJECT_DOMAIN}"
-
-if grep -qE "^[[:space:]]*127\.0\.0\.1[[:space:]]+${PROJECT_DOMAIN}([[:space:]]|$)" /etc/hosts; then
-	printf "${GREEN}${PROJECT_DOMAIN} already exists in /etc/hosts ✅${RESET}\n\n"
-	add_success "${PROJECT_DOMAIN} already exists in /etc/hosts"
-else
-	if printf "%s\n" "$HOSTS_ENTRY" >> /etc/hosts; then
-		printf "${GREEN}${PROJECT_DOMAIN} added to /etc/hosts ✅${RESET}\n\n"
-		add_success "${PROJECT_DOMAIN} added to /etc/hosts"
-	else
-		printf "${RED}${PROJECT_DOMAIN} could not be added to /etc/hosts ❌${RESET}\n\n"
-		add_failed "${PROJECT_DOMAIN} could not be added to /etc/hosts"
-		exit 1
-	fi
 fi
 
 section "SUMMARY"
