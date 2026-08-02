@@ -9,7 +9,7 @@ services:
       - wordpress_data:/var/www/html
     networks:
       - inception-net
-    port:
+    ports:
       - "433:433"
     depends_on:
       - wordpress

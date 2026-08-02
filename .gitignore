@@ -1,5 +1,6 @@
 .DS_Store
 .env.local
-secrets/*.txt
+secrets/*
+!secrets/*.example
 *.key
 *.pem
