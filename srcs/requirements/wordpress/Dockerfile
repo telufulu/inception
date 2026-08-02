@@ -14,6 +14,11 @@ RUN apk update && apk add --no-cache \
 	mariadb-client \
 	curl \
 	tar
+# In case wordpress look for php instead php84, I create a link name php to php84
+RUN ln -s /usr/bin/php84 /usr/bin/php
+
+# Sometime I have an error limit. Force to have more limit for php
+RUN echo "memory_limit = 256M" > /etc/php84/conf.d/99-memory-limit.ini
 
 # Configure PHP-FPM
 COPY conf/www.conf /etc/php84/php-fpm.d/www.conf

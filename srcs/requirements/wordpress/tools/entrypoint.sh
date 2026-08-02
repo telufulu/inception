@@ -29,6 +29,9 @@ if [ -z "$WP_USER" ] || [ -z "$WP_USER_EMAIL" ]; then
 	exit 1
 fi
 
+# Avoid the warning because is not a petition from a real web
+export HTTP_HOST="$DOMAIN_NAME"
+
 # Prepare the WordPress directory mounted from the persistent volume
 mkdir -p /var/www/html
 cd /var/www/html

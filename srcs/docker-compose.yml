@@ -4,13 +4,13 @@ services:
     build:
       context: ./requirements/nginx
       dockerfile: Dockerfile
-    image: nginx
+    image: inception-nginx
     volumes:
       - wordpress_data:/var/www/html
     networks:
       - inception-net
     ports:
-      - "433:433"
+      - "443:443"
     depends_on:
       - wordpress
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
-    image: wordpress
+    image: inception-wordpress
     secrets:
       - db_password
       - wp_admin_password
@@ -40,7 +40,7 @@ services:
     build:
       context: ./requirements/mariadb
       dockerfile: Dockerfile
-    image: mariadb
+    image: inception-mariadb
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -76,13 +76,13 @@ volumes:
 
 secrets:
   db_root_password:
-    file: ../secrets/db_root_password.txt
+    file: ../secrets/db_root_password
 
   db_password:
-    file: ../secrets/db_password.txt
+    file: ../secrets/db_password
 
   wp_admin_password:
-    file: ../secrets/wp_admin_password.txt
+    file: ../secrets/wp_admin_password
 
   wp_user_password:
-    file: ../secrets/wp_user_password.txt
+    file: ../secrets/wp_user_password

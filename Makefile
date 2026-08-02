@@ -22,7 +22,7 @@ clean: down
 
 fclean:
 	@$(COMPOSE) down --rmi all -v
-	@rm -rf $(DATA_DIR)/wordpress $(DATA_DIR)/mariadb
+	@sudo rm -rf $(DATA_DIR)/wordpress $(DATA_DIR)/mariadb
 
 re: fclean up
 

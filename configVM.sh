@@ -250,6 +250,25 @@ else
 	add_failed "/home/${LOGIN}/.vimrc creation failed"
 fi
 
+step "Add telufulu.42.fr to hosts"
+
+PROJECT_DOMAIN="${LOGIN}.42.fr"
+HOSTS_ENTRY="127.0.0.1 ${PROJECT_DOMAIN}"
+
+if grep -qE "^[[:space:]]*127\.0\.0\.1[[:space:]]+${PROJECT_DOMAIN}([[:space:]]|$)" /etc/hosts; then
+	printf "${GREEN}${PROJECT_DOMAIN} already exists in /etc/hosts ✅${RESET}\n\n"
+	add_success "${PROJECT_DOMAIN} already exists in /etc/hosts"
+else
+	if printf "%s\n" "$HOSTS_ENTRY" >> /etc/hosts; then
+		printf "${GREEN}${PROJECT_DOMAIN} added to /etc/hosts ✅${RESET}\n\n"
+		add_success "${PROJECT_DOMAIN} added to /etc/hosts"
+	else
+		printf "${RED}${PROJECT_DOMAIN} could not be added to /etc/hosts ❌${RESET}\n\n"
+		add_failed "${PROJECT_DOMAIN} could not be added to /etc/hosts"
+		exit 1
+	fi
+fi
+
 section "SUMMARY"
 
 printf "${GREEN}Successful steps:${RESET}\n"
