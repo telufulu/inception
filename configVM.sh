@@ -96,6 +96,7 @@ run_step "Installing vim" apt install -y vim
 run_critical_step "Installing make" apt install -y make
 run_critical_step "Installing curl, ca-certificates and gnupg" apt install -y curl ca-certificates gnupg
 run_critical_step "Installing graphical support packages" apt install -y xauth x11-apps dbus-x11
+run_step "Installing GTK canberra modules for Chromium" apt install -y libcanberra-gtk-module libcanberra-gtk3-module
 run_critical_step "Installing Chromium browser" apt install -y chromium
 
 # Step 5.6 — Create root editor configuration
